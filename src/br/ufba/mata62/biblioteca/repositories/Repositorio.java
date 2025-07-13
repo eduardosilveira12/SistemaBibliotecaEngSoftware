@@ -1,10 +1,10 @@
-package br.ufba.mata62.biblioteca.persistence;
-
-import br.ufba.mata62.biblioteca.models.Livro;
-import br.ufba.mata62.biblioteca.models.Usuario;
+package br.ufba.mata62.biblioteca.repositories;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import br.ufba.mata62.biblioteca.models.Livro;
+import br.ufba.mata62.biblioteca.models.Usuario;
 
 public class Repositorio {
     // estática e privada: padrão Singleton
@@ -18,35 +18,49 @@ public class Repositorio {
         this.livros = new ArrayList<>();
         carregarDadosIniciais();
     }
+
     public static Repositorio getInstance() {
         if (instance == null) {
             instance = new Repositorio();
         }
         return instance;
     }
+
     private void carregarDadosIniciais() {
-        //TODO
+        // TODO
     }
-    public Usuario buscarUsuarioPorCodigo(String codigo) {
+
+    public Usuario buscarUsuarioPorId(int id) {
         for (Usuario usuario : this.usuarios) {
-            if (usuario.getCodigo().equals(codigo)){
+            if (usuario.getId() == id) {
                 return usuario;
             }
         }
         return null;
     }
-    public Livro buscarLivroPorCodigo(String codigo) {
+
+    public Livro buscarLivroPorId(int id) {
         for (Livro livro : this.livros) {
-            if (livro.getCodigo().equals(codigo)){
+            if (livro.getId() == id) {
                 return livro;
             }
         }
         return null;
     }
+
     public List<Usuario> getUsuarios() {
         return usuarios;
     }
+
     public List<Livro> getLivros() {
         return livros;
+    }
+
+    public void adicionarUsuario(Usuario usuario) {
+        usuarios.add(usuario);
+    }
+
+    public void adicionarLivro(Livro livro) {
+        livros.add(livro);
     }
 }
