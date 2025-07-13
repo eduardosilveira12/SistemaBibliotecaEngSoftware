@@ -31,12 +31,14 @@ public class ComandoLiv implements IComando {
             }
         }
         System.out.println("\n--- Exemplares ---");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
         for (Exemplar exemplar : livro.getExemplares()) {
             System.out.println("Cód. Exemplar: " + exemplar.getCodigo() + " | Status: " + exemplar.getStatus());
             if (exemplar.getStatus() == StatusExemplar.EMPRESTADO) {
                 Emprestimo emprestimo = exemplar.getEmprestimoCorrente();
                 if (emprestimo != null) {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                     System.out.println("  > Emprestado para: " + emprestimo.getUsuario().getNome());
                     System.out.println("  > Data Empréstimo: " + emprestimo.getDataEmprestimo().format(formatter));
                     System.out.println("  > Devolução Prevista: " + emprestimo.getDataDevolucaoPrevista().format(formatter));
