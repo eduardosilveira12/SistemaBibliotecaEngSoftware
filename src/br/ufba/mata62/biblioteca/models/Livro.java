@@ -1,9 +1,10 @@
 package br.ufba.mata62.biblioteca.models;
-
+import br.ufba.mata62.biblioteca.observers.ISubject;
+import br.ufba.mata62.biblioteca.observers.IObservador;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Livro {
+public class Livro implements ISubject {
     private String codigo;
     private String titulo;
     private String editora;
@@ -14,6 +15,8 @@ public class Livro {
     private List<Exemplar> exemplares;
     private List<Reserva> reservas;
 
+    private List<IObservador> observadores;
+
     public Livro(String codigo, String titulo, String editora, List<String> autores, int edicao, int anoPublicacao) {
         this.codigo = codigo;
         this.titulo = titulo;
@@ -23,6 +26,7 @@ public class Livro {
         this.anoPublicacao = anoPublicacao;
         this.exemplares = new ArrayList<>();
         this.reservas = new ArrayList<>();
+        this.observadores = new ArrayList<>();
     }
     public String getCodigo() {
         return codigo;
@@ -35,7 +39,27 @@ public class Livro {
     }
     public void addReserva(Reserva reserva) {
         this.reservas.add(reserva);
+        if (this.reservas.size() > 2) {
+            notificarObservadores();
+        }
     }
+    @Override
+    public void registrarObservador(IObservador observador) {
+        if (!this.observadores.contains(observador)) {
+              this.observadores.add(observador);
+        }
+    }
+    @Override
+    public void removerObservador(IObservador observador) {
+        this.observadores.remove(observador);
+    }
+    @Override
+    public void notificarObservadores() {
+        for (IObservador observador : this.observadores) {
+            observador.notificar(this);
+        }
+    }
+
     public int getNumExemplaresDisponiveis() {
         int disponiveis = 0;
         for (Exemplar exemplar : this.exemplares) {
@@ -45,6 +69,9 @@ public class Livro {
         }
         return disponiveis;
     }
+    public String getTitulo() {
+        return this.titulo;
+    }
     public boolean usuarioTemReserva(Usuario usuario) {
         for (Reserva reserva : this.reservas) {
             if (reserva.getUsuario().getCodigo().equals(usuario.getCodigo())) {
@@ -53,4 +80,5 @@ public class Livro {
         }
         return false;
     }
+
 }

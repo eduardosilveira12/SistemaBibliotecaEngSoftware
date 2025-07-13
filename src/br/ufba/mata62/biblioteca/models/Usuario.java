@@ -54,5 +54,7 @@ public abstract class Usuario {
         this.emprestimos.add(emprestimo);
     }
 
+    public abstract int getTempoEmprestimo();
+
     public abstract IRegraEmprestimo getRegraEmprestimo();
 }
