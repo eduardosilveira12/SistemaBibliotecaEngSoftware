@@ -12,7 +12,7 @@ public abstract class Usuario {
     private String codigo;
     private List<Emprestimo> emprestimos;
 
-    public Usuario(String nome, String codigo) {
+    public Usuario(String codigo, String nome) {
         this.nome = nome;
         this.codigo = codigo;
         this.emprestimos = new ArrayList<>();
@@ -26,9 +26,8 @@ public abstract class Usuario {
 
     // Métodos Abstratos a serem implementados dentre de suas subclasses
     public abstract int getLimiteEmprestimo();
-
-    public static int getTempoEmprestimo();
-
+    public abstract int getTempoEmprestimo();
+    public abstract IRegraEmprestimo getRegraEmprestimo();
     // Lógica de Verificação de  Empréstimos
 
     public List<Emprestimo> getEmprestimosCorrentes() {
@@ -54,7 +53,4 @@ public abstract class Usuario {
         this.emprestimos.add(emprestimo);
     }
 
-    public abstract int getTempoEmprestimo();
-
-    public abstract IRegraEmprestimo getRegraEmprestimo();
 }
