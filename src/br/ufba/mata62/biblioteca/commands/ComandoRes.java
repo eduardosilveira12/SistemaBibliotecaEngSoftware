@@ -1,5 +1,6 @@
 package br.ufba.mata62.biblioteca.commands;
 
+import br.ufba.mata62.biblioteca.exceptions.BibliotecaException;
 import br.ufba.mata62.biblioteca.models.Livro;
 import br.ufba.mata62.biblioteca.models.Reserva;
 import br.ufba.mata62.biblioteca.models.Usuario;
@@ -13,21 +14,22 @@ public class ComandoRes implements IComando {
         this.codigoUsuario = codigoUsuario;
         this.codigoLivro = codigoLivro;
     }
+
     @Override
-    public void executar() {
+    public void executar() throws BibliotecaException {
         Repositorio repositorio = Repositorio.getInstance();
-        Usuario usuario = repositorio.buscarUsuarioPorCodigo(this.codigoUsuario);
-        Livro livro = repositorio.buscarLivroPorCodigo(this.codigoLivro);
-        if (usuario != null || livro != null) {
-            System.out.println("Usuário ou livro não encontrado.");
-            return;
+        Usuario usuario = repositorio.buscarUsuarioPorCodigo(codigoUsuario);
+        Livro livro = repositorio.buscarLivroPorCodigo(codigoLivro);
+
+        if (usuario == null || livro == null) {
+            throw new BibliotecaException("Usuário ou Livro não encontrado.");
         }
-        if(livro.usuarioTemReserva(usuario) || usuario.temEmprestimoDoLivro(livro.getCodigo())) {
-            System.out.println("Não foi possível realizar a reserva. Usuário já possui reserva ou empréstimo ativo para este livro.");
-            return;
+
+        if (livro.usuarioTemReserva(usuario) || usuario.temEmprestimoDoLivro(livro.getCodigo())) {
+            throw new BibliotecaException("Não foi possível realizar a reserva. Usuário já possui reserva ou empréstimo ativo para este livro.");
         }
+
         Reserva novaReserva = new Reserva(usuario, livro);
         livro.addReserva(novaReserva);
-        System.out.println("Reserva do livro '" + livro.getTitulo() + "' realizada com sucesso para o usuário '" + usuario.getNome() + "'.");
     }
 }

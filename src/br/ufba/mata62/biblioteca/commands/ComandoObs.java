@@ -1,5 +1,6 @@
 package br.ufba.mata62.biblioteca.commands;
 
+import br.ufba.mata62.biblioteca.exceptions.BibliotecaException;
 import br.ufba.mata62.biblioteca.models.Livro;
 import br.ufba.mata62.biblioteca.models.Usuario;
 import br.ufba.mata62.biblioteca.observers.IObservador;
@@ -15,26 +16,23 @@ public class ComandoObs implements IComando {
     }
 
     @Override
-    public void executar() {
+    public void executar() throws BibliotecaException {
         Repositorio repositorio = Repositorio.getInstance();
         Usuario usuario = repositorio.buscarUsuarioPorCodigo(this.codigoUsuario);
         Livro livro = repositorio.buscarLivroPorCodigo(this.codigoLivro);
 
         if (usuario == null) {
-            System.out.println("Usuário com código " + this.codigoUsuario + " não encontrado.");
-            return;
+            throw new BibliotecaException("Usuário com código " + this.codigoUsuario + " não encontrado.");
         }
 
         if (livro == null) {
-            System.out.println("Livro com código " + this.codigoLivro + " não encontrado.");
-            return;
-        }
+            throw new BibliotecaException("Livro com código " + this.codigoLivro + " não encontrado.");}
 
         if (usuario instanceof IObservador) {
             livro.registrarObservador((IObservador) usuario);
-            System.out.println("Observação do livro " + livro.getTitulo() + " por " + usuario.getNome() + " registrada com sucesso.");
         } else {
-            System.out.println("Este tipo de usuário não pode observar livros.");
+            throw new BibliotecaException("Este tipo de usuário não pode observar livros.");
+
         }
     }
 }
