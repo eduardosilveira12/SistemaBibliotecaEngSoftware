@@ -11,7 +11,7 @@ public class Reserva {
     public Reserva(Usuario usuario, Livro livro) {
         this.usuario = usuario;
         this.livro = livro;
-        this.dataReserva = LocalDate.now(); // Garante a regra de negócio
+        this.dataReserva = LocalDate.now();
     }
 
     public Usuario getUsuario() {

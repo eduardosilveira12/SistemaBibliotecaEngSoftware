@@ -34,6 +34,9 @@ public class Livro implements ISubject {
     public List<Reserva> getReservas() {
         return this.reservas;
     }
+    public List<Exemplar> getExemplares() {
+        return this.exemplares;
+    }
     public void addExemplar(Exemplar exemplar) {
         this.exemplares.add(exemplar);
     }
@@ -68,6 +71,17 @@ public class Livro implements ISubject {
             }
         }
         return disponiveis;
+    }
+    public Exemplar getExemplarDisponivel() {
+        for (Exemplar exemplar : this.exemplares) {
+            if (exemplar.getStatus() == StatusExemplar.DISPONIVEL) {
+                return exemplar;
+            }
+        }
+        return null;
+    }
+    public void removerReserva(Usuario usuario) {
+        this.reservas.removeIf(reserva -> reserva.getUsuario().getCodigo().equals(usuario.getCodigo()));
     }
     public String getTitulo() {
         return this.titulo;

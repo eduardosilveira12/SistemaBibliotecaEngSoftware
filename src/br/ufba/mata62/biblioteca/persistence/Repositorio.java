@@ -1,9 +1,9 @@
 package br.ufba.mata62.biblioteca.persistence;
 
-import br.ufba.mata62.biblioteca.models.Livro;
-import br.ufba.mata62.biblioteca.models.Usuario;
+import br.ufba.mata62.biblioteca.models.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Repositorio {
@@ -70,6 +70,17 @@ public class Repositorio {
             }
         }
         return null;
+    }
+    public List<Reserva> buscarReservasPorUsuario(Usuario usuario) {
+        List<Reserva> reservasDoUsuario = new ArrayList<>();
+        for (Livro livro : this.livros) {
+            for (Reserva reserva : livro.getReservas()) {
+                if (reserva.getUsuario().getCodigo().equals(usuario.getCodigo())) {
+                    reservasDoUsuario.add(reserva);
+                }
+            }
+        }
+        return reservasDoUsuario;
     }
     public List<Usuario> getUsuarios() {
         return usuarios;

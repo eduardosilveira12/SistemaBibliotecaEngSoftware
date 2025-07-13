@@ -10,20 +10,26 @@ public class Emprestimo {
     private LocalDate dataDevolucaoRealizada;
     private StatusEmprestimo status;
 
-    public Emprestimo(Exemplar exemplar, Usuario usuario, LocalDate dataEmprestimo, LocalDate dataDevolucaoPrevista) {
+    public Emprestimo(Exemplar exemplar, Usuario usuario) {
         this.exemplar = exemplar;
         this.usuario = usuario;
         this.dataEmprestimo = LocalDate.now();
-        this.dataDevolucaoPrevista = this.dataEmprestimo.plusDays(Usuario.getTempoEmprestimo());
+        this.dataDevolucaoPrevista = this.dataEmprestimo.plusDays(usuario.getTempoEmprestimo());
         this.status = StatusEmprestimo.EM_CURSO;
     }
 
-    public Exemplar getExemplar() {return exemplar;}
-    public LocalDate getDataDevolucaoPrevista() {return dataDevolucaoPrevista;}
 
+    public Exemplar getExemplar() {return exemplar;}
+    public Usuario getUsuario() {return usuario;}
+    public LocalDate getDataEmprestimo() {return dataEmprestimo;}
+    public LocalDate getDataDevolucaoRealizada() {return dataDevolucaoRealizada;}
+    public LocalDate getDataDevolucaoPrevista() {return dataDevolucaoPrevista;}
     public StatusEmprestimo getStatus() { return status;}
+
     public void finalizar(LocalDate dataDevolucao){
         this.dataDevolucaoRealizada = dataDevolucao;
         this.status = StatusEmprestimo.FINALIZADO;
+        this.exemplar.setEmprestimoCorrente(null);
+        this.exemplar.setStatus(StatusExemplar.DISPONIVEL);
     }
 }
